@@ -23,6 +23,22 @@ class FoodSeeder extends Seeder
             'description' => 'Sushi is a traditional Japanese dish of prepared vinegared rice, usually with some sugar and salt, accompanying a variety of ingredients, such as seafood, often raw, and vegetables.',
             'price' => 12.99,
             'image' => 'https://loremflickr.com/640/480/Sushi',
+        ])->create([
+            'name' => 'Burger',
+            'description' => 'A hamburger is a sandwich consisting of one or more cooked patties of ground meat, usually beef, placed inside a sliced bread roll or bun.',
+            'price' => 8.99,
+            'image' => 'https://loremflickr.com/640/480/Burger',
+        ])->create([
+            'name' => 'Pasta',
+            'description' => 'Pasta is a type of food typically made from an unleavened dough of wheat flour mixed with water or eggs, and formed into sheets or other shapes, then cooked by boiling or baking.',
+            'price' => 9.99,
+            'image' => 'https://loremflickr.com/640/480/Pasta',
+        ])->create([
+            'name' => 'Salad',
+            'description' => 'A salad is a dish consisting of pieces of food in a mixture, with at least one raw ingredient. It is often dressed, and is typically served at room temperature or chilled, though some can be served warm.',
+            'price' => 7.99,
+            'image' => 'https://loremflickr.com/640/480/Salad',
         ]);
+
     }
 }
