@@ -2,7 +2,7 @@ export default class FoodService {
 
     static async get(token:string) {
         try{
-            const response = await fetch('http://localhost:8000/api/foods', {
+            const response = await fetch(import.meta.env.VITE_APP_HOST+'/api/foods', {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
