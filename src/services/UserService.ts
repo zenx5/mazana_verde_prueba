@@ -2,7 +2,7 @@ export default class UserService {
 
     static async login(email:string, password:string) {
         try{
-            const response = await fetch('http://localhost:8000/api/login', {
+            const response = await fetch(import.meta.env.VITE_APP_HOST + '/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export default class UserService {
     static async register(name:string, email:string, password:string, password_confirmation:string) {
         
         try{
-            const response = await fetch('http://localhost:8000/api/register', {
+            const response = await fetch(import.meta.env.VITE_APP_HOST + '/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ export default class UserService {
 
     static async logout(token:string) {
         try{
-            const response = await fetch('http://localhost:8000/api/logout', {
+            const response = await fetch(import.meta.env.VITE_APP_HOST + '/api/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
