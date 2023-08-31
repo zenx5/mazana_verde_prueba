@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import type { ProductCartType } from '@/tools/type';
     import { ref } from 'vue';
-    console.log('OrderDetails')
     const { products } = defineProps<{
         products: Array<ProductCartType>
     }>()
@@ -12,7 +11,6 @@
     }>()
 
     const scrollEnd = ref( products.length < 3 )
-    console.log(products)
     const onScroll = (event: any) => {
         scrollEnd.value = event.target.scrollTop + event.target.offsetHeight === event.target.scrollHeight
     }

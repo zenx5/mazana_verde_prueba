@@ -81,9 +81,7 @@
         let errorAux = ''
         try{
             loading.value = false
-            console.log(name.value, email.value, password.value, confirmPassword.value)
             const data = await UserService.register(name.value, email.value, password.value, confirmPassword.value)
-            console.log( data )
             if( !data.error ) {
                 if( $cookies ) {
                     $cookies.set('token-hungriest', data.token, '1d')
@@ -98,7 +96,6 @@
               throw new Error(data.message)
             }
         } catch(error) {
-            console.log(error)
             errorAux = error.message
         }finally {
             loading.value = false

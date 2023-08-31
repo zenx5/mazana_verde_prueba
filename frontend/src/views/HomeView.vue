@@ -16,7 +16,6 @@
     const $cookies = inject<VueCookies>('$cookies')
 
     getCurrentCountry( (country:any) => {
-        console.log(country)
         countryName.value = country.country
         countryCode.value = country.country_code
         loading.value = false

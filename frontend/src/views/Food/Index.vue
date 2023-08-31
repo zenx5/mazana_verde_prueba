@@ -20,11 +20,8 @@
         if( $cookies ) {
             const token = $cookies?.get('token-hungriest')
             const data = await UserService.logout( token );
-            console.log( data)
             $cookies.remove('token-hungriest')
             router.push('/login');
         }
-        
-
     }
 </script>

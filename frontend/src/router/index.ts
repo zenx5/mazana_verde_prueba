@@ -9,7 +9,7 @@ const router = createRouter({
     {
       path: '',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/login',
@@ -45,8 +45,6 @@ router.beforeEach((to, from, next) => {
   if( $cookies ) {
     const token = $cookies.get('token-hungriest')
     const user = $cookies.get('user-hungriest')
-    console.log('token in router/index', token)
-    console.log('user in router/index', user)
     if ( token ) {
       store.commit('setToken', token)
       store.commit('setUser', user)
@@ -54,15 +52,11 @@ router.beforeEach((to, from, next) => {
     } else {
       store.commit('setLogged', false)
     }
-    console.log('state in router/index', store.state)
-
     if (authRequired && !token ) {
-      console.log('to login')
       return next('/login')
     }
     //validacion para redireccionar a order page cuando ya se ha logueado
     if ((to.name === 'register' || to.name === 'login') && token) {
-      console.log('to order')
       return next('/food')
     }
   }

@@ -20,9 +20,7 @@ const open = ref(false)
 const modal = ref(NONE)
 
 FoodService.get(store.state.token).then(({ data }) => {
-    console.log(data)
     products.value = data
-    console.log(products.value)
 })
 
 const addItems = (id: number) => {
@@ -46,7 +44,6 @@ const getQuantity = (id: number) => {
 const calculateTotal = () => {
     total.value = selection.value.reduce((acc: number, id) => {
         const product: ProductType = products.value.find((item) => item.id === id) as ProductType
-        console.log(acc, product.price as number)
         return acc + product.price
     }, 0)
 }
