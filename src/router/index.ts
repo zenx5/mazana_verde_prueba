@@ -7,38 +7,44 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '',
-      name: 'home',
-      component: () => import('../views/HomeView.vue')
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/Access/Login.vue')
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: () => import('../views/Access/Register.vue')
-    },
-    {
-      path: '/food',
-      name: 'order',
-      component: () => import('../views/Food/Index.vue'),
+      path: '/mazana_verde_prueba',
+      name: 'main',
       children: [
         {
           path: '',
-          name: 'orderlist',
-          component: () => import('../views/Food/List.vue')
+          name: 'home',
+          component: () => import('../views/HomeView.vue')
         },
+        {
+          path: '/mazana_verde_prueba/login',
+          name: 'login',
+          component: () => import('../views/Access/Login.vue')
+        },
+        {
+          path: '/mazana_verde_prueba/register',
+          name: 'register',
+          component: () => import('../views/Access/Register.vue')
+        },
+        {
+          path: '/mazana_verde_prueba/food',
+          name: 'order',
+          component: () => import('../views/Food/Index.vue'),
+          children: [
+            {
+              path: '',
+              name: 'orderlist',
+              component: () => import('../views/Food/List.vue')
+            },
+          ]
+        }
       ]
-    },
-
-
+    }
   ]
 })
 
 router.beforeEach((to, from, next) => {
+  console.log(to, from)
+  if(from.path==='/' && to.path ==='/')  next({name:'home'})
   const $cookies = inject<VueCookies>('$cookies')
   const publicPages = [ 'home', 'login', 'register']
   const authRequired = !publicPages.includes(to.name as string)
@@ -53,11 +59,11 @@ router.beforeEach((to, from, next) => {
       store.commit('setLogged', false)
     }
     if (authRequired && !token ) {
-      return next('/login')
+      return next({name:'login'})
     }
     //validacion para redireccionar a order page cuando ya se ha logueado
     if ((to.name === 'register' || to.name === 'login') && token) {
-      return next('/food')
+      return next({name:'orderlist'})
     }
   }
   next()

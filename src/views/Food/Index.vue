@@ -21,7 +21,7 @@
             const token = $cookies?.get('token-hungriest')
             const data = await UserService.logout( token );
             $cookies.remove('token-hungriest')
-            router.push('/login');
+            router.push({name:'login'});
         }
     }
 </script>
