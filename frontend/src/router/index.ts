@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import { inject } from 'vue'
 import type { VueCookies } from 'vue-cookies'
 import store from '@/store'
@@ -11,11 +10,6 @@ const router = createRouter({
       path: '',
       name: 'home',
       component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/login',
