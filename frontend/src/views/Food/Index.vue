@@ -1,8 +1,8 @@
 <template>
-    <div class="w-10/12 mx-auto pt-8">
+    <div class="w-10/12 mx-auto pt-8 " >
         <v-btn icon="mdi-logout" class="!absolute top-5 right-5 !bg-red-200 hover:!bg-red-500 text-white" @click="logout"></v-btn>
         <header class="mb-10">
-            <h1 class="text-3xl font-bold text-center py-5 border-b-4">El sitio favorito de los Hungriest</h1>
+            <h1 class="text-3xl text-center py-5 border-b-4"><span class="font-bold">Hungriest</span> tu lugar favorito</h1>
         </header>
 
         <RouterView />

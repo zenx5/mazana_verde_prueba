@@ -30,7 +30,19 @@ const getCurrentCountry = async ( callback: Function ) => {
         navigator.geolocation.getCurrentPosition(
             async position => {
                 const { latitude, longitude } = position.coords;
+                const lastLatitude = sessionStorage.getItem( 'latitude' )
+                const lastLongitude = sessionStorage.getItem( 'longitude' )
+                if( lastLatitude === latitude.toString() && lastLongitude === longitude.toString() ) {
+                    const lastCountry = sessionStorage.getItem( 'country' );
+                    if( lastCountry ) {
+                        callback( JSON.parse( lastCountry ) );
+                        return;
+                    }
+                }
+                sessionStorage.setItem( 'latitude', latitude.toString() );
+                sessionStorage.setItem( 'longitude', longitude.toString() );
                 const { data } = await getCountryFromCoordinates( latitude, longitude );
+                sessionStorage.setItem( 'country', JSON.stringify( data ) );
                 callback( data );
             },
             error => {

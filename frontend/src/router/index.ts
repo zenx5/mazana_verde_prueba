@@ -49,21 +49,25 @@ router.beforeEach((to, from, next) => {
   const publicPages = [ 'home', 'login', 'register']
   const authRequired = !publicPages.includes(to.name as string)
   if( $cookies ) {
-    const user = $cookies.get('token-hungriest')
-    if ( user ) {
+    const token = $cookies.get('token-hungriest')
+    const user = $cookies.get('user-hungriest')
+    console.log('token in router/index', token)
+    console.log('user in router/index', user)
+    if ( token ) {
+      store.commit('setToken', token)
+      store.commit('setUser', user)
       store.commit('setLogged', true)
     } else {
       store.commit('setLogged', false)
     }
-    console.log(store.state)
+    console.log('state in router/index', store.state)
 
-    console.log(user)
-    if (authRequired && !user ) {
+    if (authRequired && !token ) {
       console.log('to login')
       return next('/login')
     }
     //validacion para redireccionar a order page cuando ya se ha logueado
-    if (to.name === 'login' && user) {
+    if ((to.name === 'register' || to.name === 'login') && token) {
       console.log('to order')
       return next('/food')
     }

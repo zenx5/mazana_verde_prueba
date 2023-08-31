@@ -1,3 +1,40 @@
+<script setup lang="ts">
+    import { ref, inject } from 'vue'
+    import { useRouter } from 'vue-router';
+    import type { VueCookies } from 'vue-cookies'
+
+    import logomv from '@/assets/logo-mv.svg'
+    import UserService from '@/services/UserService';
+    import store from '@/store'
+    import { getCurrentCountry } from '@/tools/geolocalization';
+
+    const countryName = ref('')
+    const countryCode = ref('')
+    const loading = ref(true)
+    const router = useRouter();
+
+    const $cookies = inject<VueCookies>('$cookies')
+
+    getCurrentCountry( (country:any) => {
+        console.log(country)
+        countryName.value = country.country
+        countryCode.value = country.country_code
+        loading.value = false
+    });
+
+
+    const logout = async () => {
+        if( $cookies ) {
+            const token = $cookies?.get('token-hungriest')
+            if( token ) {
+                await UserService.logout( token );
+                $cookies.remove('token-hungriest')
+            }
+            router.push('/login');
+        }
+    }
+</script>
+
 <template>
     <main class="w-full h-full">
         <div class="flex flex-col items-center justify-center h-1/4">
@@ -7,7 +44,7 @@
         </div>
         <div class="flex flex-col items-center justify-start h-3/4 pt-40">
             <h1 class="text-3xl text-center font-bold">Bienvenido, saludos a </h1>
-            <div v-if="!loading" class="flex flex-row gap-2 border p-3 px-6 rounded mt-4">
+            <div v-if="!loading" class="flex flex-row gap-2 border p-3 px-6 rounded-md mt-4 bg-white">
                 <img
                     :src="`https://flagcdn.com/48x36/${countryCode}.png`"
                     width="32"
@@ -50,38 +87,3 @@
     </main>
 </template>
 
-<script setup lang="ts">
-    import UserService from '@/services/UserService';
-    import store from '@/store'
-    import type { VueCookies } from 'vue-cookies'
-    import { useRouter } from 'vue-router';
-    import { ref, inject } from 'vue'
-    import logomv from '@/assets/logo-mv.svg'
-    import { getCurrentCountry } from '../tools/geolocalization.ts';
-    const countryName = ref('')
-    const countryCode = ref('')
-    const loading = ref(true)
-    const router = useRouter();
-    const $cookies = inject<VueCookies>('$cookies')
-
-    getCurrentCountry( (country:any) => {
-        console.log(country)
-        countryName.value = country.country
-        countryCode.value = country.country_code
-        loading.value = false
-    });
-
-
-    const logout = async () => {
-        console.log($cookies)
-        if( $cookies ) {
-            const token = $cookies?.get('token-hungriest')
-            if( token ) {
-                const data = await UserService.logout( token );
-                console.log( data)
-                $cookies.remove('token-hungriest')
-            }
-            router.push('/login');
-        }
-    }
-</script>

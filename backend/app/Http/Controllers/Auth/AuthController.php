@@ -17,7 +17,7 @@ class AuthController extends Controller
             $validate = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required',
+                'password' => 'required|confirmed',
             ]);
             $user = User::create([
                 'name' => $request->name,
@@ -35,7 +35,7 @@ class AuthController extends Controller
         } catch(Illuminate\Validation\ValidationException $error) {
             return response()->json([
                 'error' => true,
-                'message' => 'Validation failed'
+                'message' => 'Validation failed: '.$error.getMessage()
             ], 400);
         }
         finally {
@@ -64,9 +64,13 @@ class AuthController extends Controller
                     'message' => 'Unauthorized'
                 ], 401);
             }
+            $user = User::where('email', $request->email)->first();
+            unset($user->email_verified_at);
             return response()->json([
                 'error' => false,
-                'token' => $token], 200);
+                'user' => $user,
+                'token' => $token
+            ], 200);
         } catch( Exception $error ) {
             return response()->json([
                 'error' => true,
@@ -85,15 +89,19 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        return response()->json([
-            'token' => $request->token
-        ], 200);
         try{
-            JWTAuth::invalidate($request->token);
-            return response()->json([
-                'error' => false,
-                'message' => 'User logged out successfully'
-            ], 200);
+            if( !$request->bearerToken() ) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Token not found'
+                ], 401);
+            }else {
+                JWTAuth::manager()->invalidate( new \Tymon\JWTAuth\Token($request->bearerToken()) );
+                return response()->json([
+                    'error' => false,
+                    'message' => 'User logged out successfully'
+                ], 200);
+            }
         } catch( Exception $error ) {
             return response()->json([
                 'error' => true,
@@ -101,4 +109,5 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
 }
